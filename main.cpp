@@ -21,8 +21,8 @@ public:
 };
 
 // 全局变量
-const char binDBUrl[] = "C:\\database.bin"; // bin数据库地址
-const char txtDBUrl[] = "C:\\database.txt"; // txt数据库地址
+const char binDBUrl[] = "database.bin"; // bin数据库地址
+const char txtDBUrl[] = "database.txt"; // txt数据库地址
 vector<Student> sList; // 从数据库获取的学生数据列表
 int curIndex = -1; // 记录当前序号
 string curId = ""; // 记录当前学号
