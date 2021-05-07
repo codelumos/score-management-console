@@ -15,12 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Source\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="database.bin">
+    <None Include="Resource\database\database.bin">
       <Filter>资源文件</Filter>
     </None>
     <None Include="README.md" />
@@ -28,7 +28,7 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="database.txt">
+    <Text Include="Resource\database\database.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
