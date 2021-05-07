@@ -51,7 +51,7 @@ void menu() {
 ********/
 
 /* 判断字符串是否为浮点数 */
-bool isDouble(string s) {
+bool isFloat(string s) {
 	if (s.empty()) return false;
 	if (s.size() == 1 && !isdigit(s[0])) return false;
 	if (s[0] != '-' && s[0] != '.' && !isdigit(s[0])) return false;
@@ -103,7 +103,7 @@ bool checkPara(vector<string> args, int begin) {
 	string s2Str = args[begin + 3];
 	string s3Str = args[begin + 4];
 	if (id == "" || name == "") return false;
-	if (!isDouble(s1Str) || !isDouble(s2Str) || !isDouble(s3Str)) return false;
+	if (!isFloat(s1Str) || !isFloat(s2Str) || !isFloat(s3Str)) return false;
 	double s1 = strtod(s1Str.c_str(), NULL);
 	double s2 = strtod(s2Str.c_str(), NULL);
 	double s3 = strtod(s3Str.c_str(), NULL);
@@ -136,7 +136,7 @@ void renumber() {
 }
 
 /* 数据变更后自动调整当前指针 */
-void setCur() {
+void adjustCur() {
 	// 清空数据时重置指针
 	if (sList.empty()) {
 		curIndex = -1;
@@ -163,7 +163,7 @@ void setCur() {
 }
 
 /* 数据变更后寻找原学生对象的新序号 */
-void setCurIndex() {
+void adjustCurIndex() {
 	for (int i = 0; i < sList.size(); i++) {
 		if (curId == sList[i].id) {
 			curIndex = sList[i].no;
@@ -274,7 +274,7 @@ void createDB(const char url[]) {
 	ofstream createDB;
 	createDB.open(url, ios::binary);
 	if (!createDB) {
-		cout << "数据库“" << url << "”不存在，且自动创建失败\n请检查用户是否有C盘写入权限！" << endl;
+		cout << "数据库“" << url << "”不存在，且自动创建失败\n请检查用户是否有该目录下的写入权限！" << endl;
 		system("pause");
 		exit(0);
 	}
@@ -283,7 +283,7 @@ void createDB(const char url[]) {
 }
 
 /* 初始化数据库 */
-void DBUtil() {
+void initDB() {
 
 	ifstream binDB, txtDB;
 
@@ -567,7 +567,7 @@ void rmById(string id) {
 		sList.erase(sList.begin() + index); // 从程序数据中删除对应学生
 		renumber(); // 重新编号
 		persistence(); // 持久化
-		setCur(); // 重设指针
+		adjustCur(); // 重设指针
 		cout << "删除成功！" << endl;
 	}
 	else cout << "删除失败！" << endl;
@@ -578,7 +578,7 @@ void rmAll() {
 	if (!dataExist()) return;
 	if (confirmRm("你确定要删除所有记录吗？(y/n)：")) {
 		sList.clear();
-		setCur();
+		adjustCur();
 		persistence();
 		cout << "删除成功！" << endl;
 	}
@@ -722,7 +722,7 @@ void editScore(vector<string> args) {
 	printUpdate(0);
 	args = reqPara(args, 2, 1, "请输入分数" + to_string(opt) + "新值：");
 	if (args.size() < 3) return;
-	if (isDouble(args[2])) {
+	if (isFloat(args[2])) {
 		update(args, 2, opt + 2);
 		printUpdate(1);
 	}
@@ -795,7 +795,7 @@ void set(vector<string> args) {
 	}
 
 	curIndex = newNo;
-	setCur();
+	adjustCur();
 	cout << "设置成功！" << endl;
 
 	// 执行一次list，打印当前指向对象
@@ -859,9 +859,9 @@ void sort(vector<string> args) {
 	}
 
 	renumber(); // 重新编号
-	setCurIndex(); // 寻找原指针对应的新序号
+	adjustCurIndex(); // 寻找原指针对应的新序号
 	persistence(); // 持久化（根据参考程序，排序会影响数据库数据）
-	setCur(); // 重设指针
+	adjustCur(); // 重设指针
 
 	// 执行一次list a
 	list({ "list", "a" });
@@ -973,8 +973,8 @@ int main() {
 	system("title 学生成绩管理系统"); // 设置标题
 	system("color 4E"); // 设置背景和字体颜色：红色（4）、淡黄色（E）
 
-	DBUtil(); // 初始化数据库，将数据读入程序
-	setCur(); // 初始化指针
+	initDB(); // 初始化数据库，将数据读入程序
+	adjustCur(); // 初始化指针
 	menu();	// 显示主菜单
 
 	// 开始接收操作命令
